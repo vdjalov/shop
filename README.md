@@ -1,1 +1,1 @@
-# shop
+# shop product shop using user verifications, different level of management, validations, exceptions, tests included. 

@@ -1,0 +1,79 @@
+<th:block fragment sec:authorize="isAnonymous()">
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded font-weight-bold">
+        <a class="navbar-brand" th:href="@{/index}">✳✶  🎀  𝒫𝓇🍑𝒹𝓊𝒸𝓉 𝒮𝒽💙𝓅  🎀  ✶✳</a>
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/users/login}">Login</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/users/register}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+</th:block>
+<th:block sec:authorize="isAuthenticated()">
+<header>  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light rounded font-weight-bold">
+        <a class="navbar-brand" th:href="@{/index}">✳✶  🎀  𝒫𝓇🍑𝒹𝓊𝒸𝓉 𝒮𝒽💙𝓅  🎀  ✶✳</a>
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item active" sec:authorize ="hasAuthority('USER')">
+                     <a class="nav-link" th:href="@{/cart/all}">Cart</a>
+                </li>
+                <li class="nav-item active" sec:authorize ="hasAuthority('USER')">
+                    <a class="nav-link" th:href="@{/orders/my}">My Orders</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/users/profile}">Profile</a>
+                </li>
+                
+                    <li class="nav-item active" sec:authorize ="hasAnyAuthority('MODERATOR', 'ADMIN')">
+                        <div class="dropdown show">
+                            <a class="nav-link active dropdown-toggle" href="#" role="button" id="moderatorDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Moderator
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="moderatorDropdown">
+                                <a class="dropdown-item" th:href="@{/categories/add}">Add Category</a>
+                                <a class="dropdown-item" th:href="@{/products/add}">Add Product</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/categories/all}">All Categories</a>
+                                <a class="dropdown-item" th:href="@{/products/all}">All Products</a>
+                            </div>
+                        </div>
+                    </li>
+                
+                
+                    <li class="nav-item active" sec:authorize="hasAuthority('ADMIN')">
+                        <div class="dropdown show">
+                            <a class="nav-link active dropdown-toggle" href="#" role="button" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Admin
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <a class="dropdown-item" th:href="@{/users/all}">All Users</a>
+                                 <a class="dropdown-item" th:href="@{/orders/all}">All Orders</a>
+                            </div>
+                        </div>
+                    </li>
+                
+                <li class="nav-item active">
+                    <form th:action="@{/logout?login}" method="post">
+                        <button class="logout-button nav-link">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+</th:block>
