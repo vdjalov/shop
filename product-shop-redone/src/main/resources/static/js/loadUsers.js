@@ -18,15 +18,15 @@ function userAuthorities(authorities) {
 }
 
 
-function getRolesOptions(authorities, email) {
-    const allAuthorities = ["ADMIN", "USER", "ROOT", "MODERATOR"];
+function getRolesOptions(authorities, id) {
+    const allAuthorities = ["ADMIN", "USER", "MODERATOR"];
     const currentUserAuthorities = userAuthorities(authorities);
     let element =``;
 
     allAuthorities.forEach(auth => {
         if(!currentUserAuthorities.includes(auth)) {
             element+=
-                `<form action="/api/users/set-role/${auth.toLowerCase()}/${email}" method="post" class="mb-1 mx-1"><input type="hidden" name="_csrf" value="80417983-fe8b-45c7-963e-31f6915a1560">
+                `<form action="/api/users/set-role/${auth.toLowerCase()}/${id}" method="post" class="mb-1 mx-1"><input type="hidden" name="_csrf" value="80417983-fe8b-45c7-963e-31f6915a1560">
                      <button class="btn btn-dark">${auth}</button>
                 </form>`;
         }
@@ -96,21 +96,22 @@ fetch(URLs.getUsers)
     .then((data) => {
         console.log(data);
          getPagingNumbering(data);
+         let counter = 1 + (data.number * 5); 
         data.content.forEach(user => {
             console.log(user);
           
                     $("#users").append(`<tr class="row mx-auto">
-                   <th class="col-md-2 text-center"></th>
+                   <th class="col-md-2 text-center">${counter}</th>
                    <td class="col-md-3 text-center">${user.email.split('@')[0]}</td>
                    <td class="col-md-2 text-center">${user.email}</td>
                    <td class="col-md-2 text-center">${userAuthorities(user.authorities).join(" ,")}</td>
                    <td class="col-md-3 text-center">
                         <div class="row">
-                            ${getRolesOptions(user.authorities, user.email)}
+                            ${getRolesOptions(user.authorities, user.id)}
                         </div>
-                          
                    </td>
                </tr>`)
+               counter++;
         });
     })
 

@@ -9,6 +9,11 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -60,7 +65,7 @@ public class UserServiceImpl implements UserService{
 			Set<Role> allRoles = this.roleService.findAll().stream().collect(Collectors.toSet());
 			user.setAuthorities(allRoles);
 		} else {
-			user.setAuthorities(new HashSet<>(Set.of(this.roleService.getByAuthority("USER"))));
+			user.setAuthorities(new HashSet<>(Set.of(this.roleService.getByAuthority("USER").get())));
 		}
 		
 		User returnedUser = this.userRepository.save(user);
@@ -77,7 +82,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int updateUserDetails(EditUserProfileModel editUserProfileModel) {
-		
 		
 		if(!editUserProfileModel.getNewPassword().equals(editUserProfileModel.getConfirmNewPassword())) {
 			return 0;
@@ -101,6 +105,37 @@ public class UserServiceImpl implements UserService{
 		this.userRepository.save(user);
 		return -5;
 	}
+
+
+	@Override
+	public Page<User> findAllUsers(Optional<Integer> page, Optional<String> sortBy) {
+		
+		Page<User> users = this.userRepository.findAll(PageRequest.of(page.orElse(0), 5,
+				Sort.by(Direction.ASC, sortBy.orElse("id"))));
+		users.getContent().forEach(user -> user.setPassword(null));
+		return users;
+	}
+
+
+	@Override
+	public void updateUserAuthority(long userId, String role) throws Exception {
+		Optional<User> user = this.userRepository.findById(userId);
+		Optional<Role> currentRole = this.roleService.getByAuthority(role.toUpperCase());
+		
+		if(currentRole.isPresent()) {
+			Set<Role> userRoles = (Set<Role>) user.get().getAuthorities();
+			userRoles.add(currentRole.get());
+			user.get().setAuthorities(userRoles);
+			this.userRepository.save(user.get());
+		} else {
+			throw new Exception("No such role.");
+		}
+		
+		
+	}
+
+
+	
 
 
 

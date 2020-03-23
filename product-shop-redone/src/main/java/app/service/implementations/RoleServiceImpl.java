@@ -1,6 +1,7 @@
 package app.service.implementations;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
 
 
 	@Override
-	public Role getByAuthority(String authority) {
+	public Optional<Role> getByAuthority(String authority) {
 		return this.roleRepository.findByAuthority(authority);
 	}
 
