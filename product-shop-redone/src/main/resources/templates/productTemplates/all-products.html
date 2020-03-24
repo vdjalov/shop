@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+	<th:block th:include="~{fragments/head}"></th:block>
+<body>
+<div class="container-fluid">
+    <th:block th:include="~{fragments/header}"></th:block>
+
+    <main class="mt-3">
+        <h1 class="text-center text-dark">All Products</h1>
+        <hr class="hr-2 bg-dark w-75">
+       <div class="pagination justify-content-center mb-1">
+	       <select name="takehowmany" id="perPage" class="page-link mr-1" onchange="loadProducts()">
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+		   </select>
+		   <select name="takehowmany" id="sort" class="page-link" onchange="loadProducts()">
+				<option value="price-asc">price-asc</option>
+				<option value="price-desc">price-desc</option>
+				<option value="name">name</option>
+		   </select>
+	   </div>
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-3 text-center">Image</th>
+                <th class="col-md-3 text-center">Name</th>
+                <th class="col-md-2 text-center">Price</th>
+                <th class="col-md-3 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="products">
+            
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+			  <ul class="pagination justify-content-center">
+			    <li class="page-item">
+			      <a class="page-link" href="#" aria-label="Previous" id="previous">
+			        <span aria-hidden="true">&laquo;</span>
+			        <span class="sr-only">Previous</span>
+			      </a>
+			    </li>
+			    <li class="page-item"><a class="page-link" href="#" id="one">1</a></li>
+			    <li class="page-item"><a class="page-link" href="#" id="two">2</a></li>
+			    <li class="page-item"><a class="page-link" href="#" id="three">3</a></li>
+			    <li class="page-item">
+			      <a class="page-link" href="#" aria-label="Next" id="next">
+			        <span aria-hidden="true">&raquo;</span>
+			        <span class="sr-only">Next</span>
+			      </a>
+			    </li>
+			  </ul>
+			</nav>
+        <hr class="hr-2 bg-dark">
+    </main>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+</body>
+	<script type="text/javascript" src="/js/loadProducts.js"></script>
+	<script type="text/javascript">
+		window.onload = loadProducts();
+	</script>	
+	
+</html>
+
+
+

@@ -125,7 +125,7 @@ public class CategoryController {
 		CategoryViewModel categoryViewModel = null;
 		try {
 			categoryViewModel = this.categoryService.deleteCategoryById(categoryId);
-			redir.addFlashAttribute("success", "category " + categoryViewModel.getCategory() + " deleted");
+			redir.addFlashAttribute("success", "category '" + categoryViewModel.getCategory().toUpperCase() + "' deleted");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());		// Intercept exception
 			e.printStackTrace();
