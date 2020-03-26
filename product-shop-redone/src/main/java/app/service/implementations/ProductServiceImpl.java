@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import app.data.models.Product;
-import app.data.models.User;
 import app.data.repositories.ProductRepository;
 import app.service.CloudinaryService;
 import app.service.ProductService;
@@ -49,10 +48,22 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public Page<Product> findAllUsers(Optional<Integer> page, Optional<String> sortBy) {
-		// Parse sort by to chnage the direction
-		Page<Product> products = this.productRepository.findAll(PageRequest.of(page.orElse(0), 5,
-				Sort.by(Direction.ASC, sortBy.orElse("id"))));
+	public Page<Product> findAllUsers(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> ipp) {
+		Direction direction = Direction.ASC;
+		Optional<String> sort = null;
+		
+		if(sortBy.isPresent() && !sortBy.get().equals("name")) {
+			String result[] = sortBy.get().split("-");
+			sort = Optional.of(result[0]);
+				if(result[1].equals("desc")) {
+					direction = Direction.DESC;
+				}
+		} else {
+			sort= Optional.of("name");
+		}
+		
+		Page<Product> products = this.productRepository.findAll(PageRequest.of(page.orElse(0), ipp.orElse(5),
+				Sort.by(direction, sort.orElse("name"))));
 		return products;
 	}
 

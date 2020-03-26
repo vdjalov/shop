@@ -26,8 +26,10 @@ public class ProductsApi {
 
 	@GetMapping(value = "/all", produces = "application/json")
 	public Page<Product> findAllProducts(@RequestParam Optional<Integer> page, 
-										 @RequestParam Optional<String> sortBy) {
-		Page<Product> users =  this.productService.findAllUsers(page, sortBy);
+										 @RequestParam Optional<String> sortBy,
+										 @RequestParam Optional<Integer> ipp) {
+	
+		Page<Product> users =  this.productService.findAllUsers(page, sortBy, ipp);
 		return users;
 		
 	}
