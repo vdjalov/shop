@@ -140,12 +140,22 @@ public class ProductController {
 		} catch (Exception e) {
 			System.out.println(e.getMessage()); // Intercept message
 		}
+		
 		modelAndView.addObject("product", productViewModel);
-		return new ModelAndView(DELETE_PRODUCT_VIEW);
+		modelAndView.setViewName(DELETE_PRODUCT_VIEW);
+		return modelAndView;
 	}
 	
 	
-	
+	@PostMapping("/delete/{id}")
+	public ModelAndView confirmDeleteProduct(@PathVariable("id") long id) {
+		try {
+			this.productService.deleteProductById(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage()); // intercept exception
+		}
+		return new ModelAndView("redirect:/products/all");
+	}
 	
 	
 	

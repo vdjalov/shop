@@ -26,7 +26,9 @@
             <div class="form-group">
                 <label for="add-product-categories" class="font-weight-bold">Categories</label>
                 <select multiple="" class="form-control" id="add-product-categories" name="categories">
-                    <option disabled="">Technology</option>
+                	<th:block th:each="category : ${product.categories}">
+                    	<option disabled="" th:text="${category.category}"></option>
+                    </th:block>
                 </select>
             </div>
             <hr class="hr-2 bg-dark w-25">

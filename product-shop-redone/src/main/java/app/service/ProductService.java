@@ -26,4 +26,6 @@ public interface ProductService {
 
 	ProductViewModel getProductById(long id) throws Exception;
 
+	void deleteProductById(long id) throws Exception;
+
 }

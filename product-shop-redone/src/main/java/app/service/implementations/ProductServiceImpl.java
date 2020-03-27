@@ -131,6 +131,16 @@ public class ProductServiceImpl implements ProductService {
 		return productViewModel;
 	}
 
+
+	@Override
+	public void deleteProductById(long id) throws Exception {
+		if(this.productRepository.findById(id).isPresent()) {
+			this.productRepository.deleteById(id);
+		} else {
+			throw new Exception("Cannot delete product. Id not found.");
+		}
+	}
+
 	
 	
 	
