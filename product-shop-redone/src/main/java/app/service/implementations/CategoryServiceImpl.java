@@ -86,6 +86,12 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 
+	@Override
+	public Optional<Category> getByCategoryName(String categoryName) {
+		return this.categoryRepository.findByCategory(categoryName);
+	}
+
+
 	
 	
 	

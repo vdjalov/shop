@@ -1,6 +1,8 @@
 package app.service.implementations;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -12,24 +14,30 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import app.data.models.Category;
 import app.data.models.Product;
 import app.data.repositories.ProductRepository;
+import app.service.CategoryService;
 import app.service.CloudinaryService;
 import app.service.ProductService;
 import app.service.models.AddProductModel;
+import app.service.models.EditProductValidateModel;
+import app.web.models.ProductViewModel;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 	
 	private ProductRepository productRepository;
+	private CategoryService categoryService;
 	private ModelMapper modelMapper;
 	private CloudinaryService cloudinaryService;
 	
 	
 	@Autowired
-	public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper,
+	public ProductServiceImpl(ProductRepository productRepository, CategoryService categoryService, ModelMapper modelMapper,
 			CloudinaryService cloudinaryService) {
 		this.productRepository = productRepository;
+		this.categoryService = categoryService;
 		this.modelMapper = modelMapper;
 		this.cloudinaryService = cloudinaryService;
 	}
@@ -65,6 +73,62 @@ public class ProductServiceImpl implements ProductService {
 		Page<Product> products = this.productRepository.findAll(PageRequest.of(page.orElse(0), ipp.orElse(5),
 				Sort.by(direction, sort.orElse("name"))));
 		return products;
+	}
+
+
+	@Override
+	public ProductViewModel findProductById(Long id) {
+	Optional<Product> product = this.productRepository.findById(id);
+	ProductViewModel productViewModel = null;
+		if(product.isPresent()) {
+			productViewModel = this.modelMapper.map(product.get(), ProductViewModel.class);
+		}
+		return productViewModel;
+	}
+
+
+	@Override
+	public List<String> getAllCategories() {
+		List<String> allCategories = new ArrayList<>();
+				this.categoryService.getAllCategories().stream()
+									.forEach(category -> allCategories.add(category.getCategory()));
+		return allCategories;
+	}
+
+
+	@Override
+	public void editProduct(EditProductValidateModel editProductValidateModel, long id) throws Exception {
+		List<Category> productCategories = new ArrayList<>();
+		editProductValidateModel.getCategories().stream()
+								.forEach(cat -> {
+									Optional<Category> category = this.categoryService.getByCategoryName(cat);
+									if(category.isPresent()) {
+										productCategories.add(category.get());
+									}
+								});
+		Optional<Product> product = this.productRepository.findById(id);
+		if(product.isPresent()) {
+			product.get().setCategories(productCategories);
+			product.get().setDescription(editProductValidateModel.getDescription());
+			product.get().setName(editProductValidateModel.getName());
+			product.get().setPrice(editProductValidateModel.getPrice());
+			this.productRepository.save(product.get());
+		} else {
+			throw new Exception("Category not present");
+		}
+	}
+
+
+	@Override
+	public ProductViewModel getProductById(long id) throws Exception {
+		Optional<Product> product = this.productRepository.findById(id);
+		ProductViewModel productViewModel = null;	
+			if(product.isPresent()) {
+				productViewModel = this.modelMapper.map(product.get(), ProductViewModel.class);
+			} else {
+				throw new Exception("product not found");
+			}
+		return productViewModel;
 	}
 
 	
