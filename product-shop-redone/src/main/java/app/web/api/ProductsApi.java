@@ -34,4 +34,17 @@ public class ProductsApi {
 		
 	}
 	
+
+	@GetMapping(value = "/byCategory", produces = "application/json")
+	public Page<Product> findAllProductsByCategory(
+										 @RequestParam Optional<Integer> page, 
+										 @RequestParam Optional<String> sortBy,
+										 @RequestParam Optional<Integer> size,
+										 @RequestParam Optional<String> cat) {
+	
+		Page<Product> products =  this.productService.findProductsByCategory(page, sortBy, size, cat);
+		return products;
+		
+	}
+	
 }

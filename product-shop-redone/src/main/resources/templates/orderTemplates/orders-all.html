@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+	<th:block th:include="~{fragments/head}"></th:block>
+<body>
+<div class="container-fluid">
+    <th:block th:include="~{fragments/header}"></th:block>
+    
+    <main class="mt-3">
+        <h1 class="text-center text-dark">All Orders</h1>
+        <hr class="hr-2 bg-dark w-75">
+        <table class="table table-hover w-75 mx-auto">
+            <thead>
+            <tr class="row mx-auto">
+                <th class="col-md-1 text-center">#</th>
+                <th class="col-md-3 text-center">Image</th>
+                <th class="col-md-3 text-center">Customer</th>
+                <th class="col-md-2 text-center">Price</th>
+                <th class="col-md-3 text-center">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+	            <th:block th:each="order, iter : ${orders}">
+	                <tr class="row mx-auto">
+	                    <th class="col-md-1 text-center">[[${iter.index + 1}]]</th>
+	                    <td class="col-md-3"><div class="text-center"><a th:href="@{/orders/details/} + ${order.id}">
+	                        <img th:src="${order.product.imageUrl}" width="40" height="40" alt="Product">
+	                    </a></div></td>
+	                    <td class="col-md-3 text-center">[[${order.getCustomer().getUsername()}]]</td>
+	                    <td class="col-md-2 text-center">[[${order.totalPrice}]]</td>
+	                    <td class="col-md-3 text-center" th:text="${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></td>
+	                </tr>
+	            </th:block>
+            </tbody>
+        </table>
+        <hr class="hr-2 bg-dark">
+    </main>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+</body>
+</html>

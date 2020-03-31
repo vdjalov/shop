@@ -20,7 +20,7 @@
             </div>
             <div class="row">
                 <div class="col col-md-12 text-center mt-3">
-                    <h4>Desciption: [[${product.description}]]</h4>
+                    <h4>Description: [[${product.description}]]</h4>
                 </div>
             </div>
             <div class="row">
@@ -28,6 +28,13 @@
                     <h4>Price: [[${product.price}]]</h4>
                 </div>
             </div>
+             <div class="row">
+             	 <div class="col col-md-12 text-center">
+		       		<form th:action="@{/orders/details/} + ${product.id}" method="get">
+		       			<button type="submit" class="btn btn-success">Order Product</button>
+		       		</form>
+       			</div>
+       		</div>
         </div>
     </main>
   <th:block th:include="~{fragments/footer}"></th:block>

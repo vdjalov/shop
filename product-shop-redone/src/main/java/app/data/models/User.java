@@ -3,6 +3,7 @@ package app.data.models;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User extends BaseEntity implements UserDetails{
 
 	@NotEmpty
+	@Column(unique = true)
 	private String username;
 	
 	@NotEmpty

@@ -141,6 +141,18 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
+
+	
+	@Override
+	public Page<Product> findProductsByCategory(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> size,
+			Optional<String> cat) {
+	
+		System.out.println(cat.get());
+		Page<Product> allProducts = this.productRepository.getAllProductsByCategory(PageRequest.of(page.orElse(0), size.orElse(5),
+				Sort.by(Direction.ASC, sortBy.orElse("name"))), cat.get());
+		return allProducts;
+	}
+
 	
 	
 	
