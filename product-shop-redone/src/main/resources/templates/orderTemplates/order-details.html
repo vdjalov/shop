@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    
+	<th:block th:include="~{fragments/head}"></th:block>
+<body>
+<div class="container-fluid">
+    <th:block th:include="~{fragments/header}"></th:block>
+    
+    <main class="mt-3">
+        <div class="jumbotron bg-light">
+            <div class="text-center">
+                <img th:src="${order.product.imageUrl}" width="200" height="200" alt="Product">
+            </div>
+            <div class="row">
+                <div class="col col-md-12 text-center mt-5">
+                    <h1>Name: [[${order.product.name}]]</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12 text-center mt-3">
+                    <h4>Desciption: [[${order.product.description}]]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12 text-center mt-3">
+                    <h4>Customer: [[${order.customer.username}]]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12 text-center">
+                    <h4>Quantity: [[${order.quantity}]]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12 text-center">
+                    <h4>Price: [[${order.totalPrice}]]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-md-12 text-center">
+                    <h4 th:text="'Date: ' + ${#dates.format(order.orderDate, 'dd-MM-yyyy HH:mm')}"></h4>
+                </div>
+            </div>
+        </div>
+    </main>
+   <th:block th:include="~{fragments/footer}"></th:block>
+</div>
+</body>
+</html>

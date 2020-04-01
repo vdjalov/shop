@@ -29,7 +29,7 @@ public class ProductsApi {
 										 @RequestParam Optional<String> sortBy,
 										 @RequestParam Optional<Integer> ipp) {
 	
-		Page<Product> users =  this.productService.findAllUsers(page, sortBy, ipp);
+		Page<Product> users =  this.productService.findAllProducts(page, sortBy, ipp);
 		return users;
 		
 	}
@@ -41,8 +41,13 @@ public class ProductsApi {
 										 @RequestParam Optional<String> sortBy,
 										 @RequestParam Optional<Integer> size,
 										 @RequestParam Optional<String> cat) {
-	
-		Page<Product> products =  this.productService.findProductsByCategory(page, sortBy, size, cat);
+		Page<Product> products = null;
+		if(cat.get().equals("all")) {
+			products = this.productService.findAllProducts(page, sortBy, size);
+		} else {
+			products = this.productService.findProductsByCategory(page, sortBy, size, cat);
+		}
+		  
 		return products;
 		
 	}

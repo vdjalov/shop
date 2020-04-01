@@ -10,4 +10,6 @@ public interface OrderService {
 
 	List<OrderViewModel> getOrdersByCustomerName(String username);
 
+	OrderViewModel getOrderById(long orderId) throws Exception;
+
 }

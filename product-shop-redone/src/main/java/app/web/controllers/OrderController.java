@@ -23,6 +23,7 @@ public class OrderController {
 	public static final String ORDER_PRODUCT_VIEW = "orderTemplates/order-product";
 	public static final String ALL_ORDERS_VIEW = "orderTemplates/orders-all";
 	public static final String MY_ORDERS_VIEW = "orderTemplates/orders-my";
+	public static final String ORDER_DETAILS_VIEW = "orderTemplates/order-details";
 	
 	private ProductService productService;
 	private OrderService orderService;
@@ -65,6 +66,18 @@ public class OrderController {
 	}
 
 
+	@GetMapping("/view/{id}")
+	public ModelAndView getOrderDetailsView(@PathVariable("id") long orderId, ModelAndView modelAndView) {
+		OrderViewModel orderViewModel = null;
+		try {
+			orderViewModel = this.orderService.getOrderById(orderId);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		modelAndView.addObject("order", orderViewModel);
+		modelAndView.setViewName(ORDER_DETAILS_VIEW);
+		return modelAndView;
+	}
 	
 }
 

@@ -12,14 +12,12 @@ function loadProductsByCategory() {
 }
 
 function fetchProducts(url) {
-	console.log(url);
 	$("#products").empty();
 	fetch(url)
 		.then((response) => {
 			return response.json();
 		})
 		.then((data) => {
-			console.log(data);
 			let categoryName = sessionStorage.getItem("category");
 			data.content.forEach(product => {
 				let categories = [];
@@ -40,7 +38,6 @@ function fetchProducts(url) {
 				}
 			})
 		});
-
 }
 
 

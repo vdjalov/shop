@@ -16,7 +16,7 @@ public interface ProductService {
 
 	void addProduct(AddProductModel addProductModel) throws IOException;
 
-	Page<Product> findAllUsers(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> itemsPerPage);
+	Page<Product> findAllProducts(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> itemsPerPage);
 
 	ProductViewModel findProductById(Long id);
 
