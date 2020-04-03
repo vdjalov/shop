@@ -144,10 +144,19 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public Page<Product> findProductsByCategory(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> size,
-			Optional<String> cat) {
+			Optional<String> cat) throws Exception {
 	
+		Direction direction = Direction.ASC;
+		if((sortBy.isPresent()) && (sortBy.get().equals("price-asc") || sortBy.get().equals("price-desc"))) {
+			String[] result = sortBy.get().split("[-]+");
+				if(result[1].equalsIgnoreCase("desc")) {
+					direction = Direction.DESC;
+				}
+				sortBy = Optional.of(result[0]);
+		} 
+		
 		Page<Product> allProducts = this.productRepository.getAllProductsByCategory(PageRequest.of(page.orElse(0), size.orElse(5),
-				Sort.by(Direction.ASC, sortBy.orElse("name"))), cat.get());
+				Sort.by(direction, sortBy.orElse("name"))), cat.get());
 		return allProducts;
 	}
 

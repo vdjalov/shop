@@ -1,3 +1,4 @@
+const refererURL = document.referrer;
 
 function updateProductsIpp() {
     let itemsPerPage = $("#perPage").val();

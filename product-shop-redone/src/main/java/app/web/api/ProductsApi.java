@@ -45,7 +45,11 @@ public class ProductsApi {
 		if(cat.get().equals("all")) {
 			products = this.productService.findAllProducts(page, sortBy, size);
 		} else {
-			products = this.productService.findProductsByCategory(page, sortBy, size, cat);
+			try {
+				products = this.productService.findProductsByCategory(page, sortBy, size, cat);
+			} catch (Exception e) {
+				System.out.println(e.getMessage()); // Intercept exception 
+			}
 		}
 		  
 		return products;

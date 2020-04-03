@@ -29,6 +29,6 @@ public interface ProductService {
 	void deleteProductById(long id) throws Exception;
 
 	Page<Product> findProductsByCategory(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> size,
-			Optional<String> cat);
+			Optional<String> cat) throws Exception;
 
 }
