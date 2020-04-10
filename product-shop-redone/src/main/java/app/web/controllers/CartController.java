@@ -3,8 +3,11 @@ package app.web.controllers;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,14 +36,14 @@ public class CartController {
 
 
 	@PostMapping("/add/{productId}")
-	public ModelAndView addToCart(@PathVariable("productId") long productId, @ModelAttribute("quantity") int quantity, Principal principal) {
+	public ModelAndView addToCart(@PathVariable("productId") long productId, @ModelAttribute("quantity") int quantity, Principal principal) throws Exception {
 		String username = principal.getName();
 		
-		try {
+//		try {
 			this.cartService.saveToCart(productId, username, quantity);
-		} catch (Exception e) {
-			System.out.println(e.getMessage()); // 
-		}
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage()); // 
+//		}
 		return new ModelAndView("redirect:/cart/all");
 	}
 	
@@ -65,16 +68,27 @@ public class CartController {
 	
 	
 	@PostMapping("/checkout")
-	public ModelAndView checkoutOrders(ModelAndView modelAndView, Principal principal, RedirectAttributes redir) {
+	public ModelAndView checkoutOrders(ModelAndView modelAndView, Principal principal, RedirectAttributes redir) throws Exception {
 		String username = principal.getName();
-		try {
+//		try {
 			this.cartService.checkoutCart(username);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
 		redir.addFlashAttribute("msg", "your order is on its way");
 		return new ModelAndView("redirect:/cart/all");
 	}
+	
+	
+	@ExceptionHandler(Exception.class)
+	  public ModelAndView handleError(HttpServletRequest req, Exception ex) {
+		ModelAndView mav = new ModelAndView();
+	 
+	    mav.addObject("ex", ex);
+	    mav.addObject("url", req.getRequestURL());
+	    mav.setViewName("error/commonError");
+	    return mav;
+	  }
 }
 
 

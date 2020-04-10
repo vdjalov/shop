@@ -3,9 +3,12 @@ package app.web.controllers;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +39,7 @@ public class OrderController {
 	
 	
 	@GetMapping("/details/{productId}")
-	public ModelAndView getOrderProductView(@PathVariable("productId") Long productId ,ModelAndView modelAndView, Principal principal) {
+	public ModelAndView getOrderProductView(@PathVariable("productId") Long productId ,ModelAndView modelAndView, Principal principal) throws Exception {
 		ProductViewModel product = this.productService.findProductById(productId);
 		String customer = principal.getName();
 		modelAndView.addObject("customer", customer);
@@ -78,6 +81,16 @@ public class OrderController {
 		modelAndView.setViewName(ORDER_DETAILS_VIEW);
 		return modelAndView;
 	}
+	
+	@ExceptionHandler(Exception.class)
+	  public ModelAndView handleError(HttpServletRequest req, Exception ex) {
+		ModelAndView mav = new ModelAndView();
+	 
+	    mav.addObject("ex", ex);
+	    mav.addObject("url", req.getRequestURL());
+	    mav.setViewName("error/commonError");
+	    return mav;
+	  }
 	
 }
 

@@ -30,9 +30,7 @@
             </div>
              <div class="row">
              	 <div class="col col-md-12 text-center">
-		       		<form th:action="@{/orders/details/} + ${product.id}" method="get">
-		       			<button type="submit" class="btn btn-success">Order Product</button>
-		       		</form>
+		       		<a th:href="@{/orders/details/} + ${product.id}" class="btn btn-success">Order Product</a>
        			</div>
        		</div>
         </div>

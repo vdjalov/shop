@@ -77,11 +77,13 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public ProductViewModel findProductById(Long id) {
+	public ProductViewModel findProductById(Long id) throws Exception {
 	Optional<Product> product = this.productRepository.findById(id);
 	ProductViewModel productViewModel = null;
 		if(product.isPresent()) {
 			productViewModel = this.modelMapper.map(product.get(), ProductViewModel.class);
+		} else {
+			throw new Exception("invalid product id");
 		}
 		return productViewModel;
 	}

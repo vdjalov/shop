@@ -18,7 +18,7 @@ public interface ProductService {
 
 	Page<Product> findAllProducts(Optional<Integer> page, Optional<String> sortBy, Optional<Integer> itemsPerPage);
 
-	ProductViewModel findProductById(Long id);
+	ProductViewModel findProductById(Long id) throws Exception;
 
 	List<String> getAllCategories();
 

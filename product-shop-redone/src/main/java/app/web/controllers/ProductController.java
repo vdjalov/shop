@@ -85,7 +85,7 @@ public class ProductController {
 	
 	
 	@GetMapping("/details/{id}")
-	public ModelAndView getProductDetailsView(@PathVariable("id") Long id, ModelAndView modelAndView) {
+	public ModelAndView getProductDetailsView(@PathVariable("id") Long id, ModelAndView modelAndView) throws Exception {
 		ProductViewModel productViewModel = this.productService.findProductById(id);
 		modelAndView.addObject("product", productViewModel);
 		modelAndView.setViewName(DETAILS_PRODUCT_VIEW);
@@ -94,7 +94,7 @@ public class ProductController {
 	
 	
 	@GetMapping("/edit/{id}")
-	public ModelAndView editProductView(@ModelAttribute("editProduct") EditProductValidateModel editProductValidateModel, @PathVariable("id") Long id, ModelAndView modelAndView) {
+	public ModelAndView editProductView(@ModelAttribute("editProduct") EditProductValidateModel editProductValidateModel, @PathVariable("id") Long id, ModelAndView modelAndView) throws Exception {
 		ProductViewModel productViewModel = this.productService.findProductById(id);
 		List<String> allCategories = this.productService.getAllCategories();
 		List<String> productCategories = productViewModel.getCategories().stream().map(cat -> cat.getCategory()).collect(Collectors.toList());
@@ -108,7 +108,7 @@ public class ProductController {
 	
 	@PostMapping("/edit/{id}")
 	public ModelAndView confirmEditProduct(@PathVariable("id") long id, @Valid@ModelAttribute("editProduct") EditProductValidateModel editProductValidateModel, 
-			BindingResult bindingResult) {
+			BindingResult bindingResult) throws Exception {
 		if(bindingResult.hasErrors()) {
 			ProductViewModel productViewModel = this.productService.findProductById(id);
 			List<String> allCategories = this.productService.getAllCategories();
@@ -156,6 +156,8 @@ public class ProductController {
 		}
 		return new ModelAndView("redirect:/products/all");
 	}
+	
+	
 	
 	
 	
